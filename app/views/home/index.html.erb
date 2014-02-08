@@ -1,0 +1,33 @@
+<div ng-controller="MainCtrl">
+  <div ng-view ng-hide="searching">
+    {{ text }}
+  </div>
+  <h3>Posts</h3>
+  <button ng-click="loadPosts()">Load Posts</button>
+  <div ng-show="searching">Loading posts...</div>
+  <div ng-repeat="post in posts">
+    <h4>{{post.title}}</h4>
+    <h5>by {{post.user_id}}</h5>
+    <p>{{post.body}}</p>
+    <button ng-click="edit()">EDIT</button>
+
+
+    <div ng-show="editing">
+      <form novalidate class="simple-form">
+        Title: <input type="text" ng-model="post.title" /><br />
+        <textarea ng-model="post.body"></textarea><br />
+        <button ng-click="reset()">RESET</button>
+        <button ng-click="update(post)">SAVE</button>
+      </form>
+      <pre>form = {{user | json}}</pre>
+      <pre>master = {{master | json}}</pre>
+      </div>
+    </div>
+
+
+</div>
+<div ng-controller="TestCtrl">
+  <div ng-view>
+    {{ text }}
+  </div>
+</div>
