@@ -1,5 +1,5 @@
 // Initialize local application
-var Blog = angular.module('Blog', ['rails']);
+var Blog = angular.module('Blog', ['ui.bootstrap','rails']);
 
 Blog.config(["RailsResourceProvider", function (RailsResourceProvider) {
     RailsResourceProvider.updateMethod('patch');

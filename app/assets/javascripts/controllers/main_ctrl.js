@@ -22,14 +22,14 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
     $scope.text = 'Main controller text';
 
     $scope.loadPosts = function () {
-      $scope.searching = true;
+      $scope.loading = true;
 
       Post.query().then(function (results) {
           $scope.posts = results;
-          $scope.searching = false;
+          $scope.loading = false;
       }, function (error) {
           console.log(["error", error]);
-          $scope.searching = false;
+          $scope.loading = false;
       });
     };
 
@@ -54,5 +54,13 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
 
 Blog.controller('TestCtrl', ['$scope', function ($scope) {
     $scope.text = 'Hello, Angular fanatic.';
+
+    $scope.following = {13: false, 7: true};
+
+    $scope.follow = function (user_id) {
+      console.log(['toggle follow', user_id])
+      console.log($scope.following);
+
+    }
 
 }]);

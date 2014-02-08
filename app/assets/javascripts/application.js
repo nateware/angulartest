@@ -16,6 +16,7 @@
 //= require angular-route
 //= require angular-animate
 //= require angular-resource
+//= require angular-ui-bootstrap
 //= require angularjs/rails/resource
 //= require initializer
 //= require_tree ./controllers
