@@ -3,7 +3,19 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
-    sleep 1
     render json: @posts
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    if @post.update_attributes(post_params)
+      render json: @post
+    else
+      render json: @post.errors, status: :unprocessable_entity
+    end
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :body, :user_id)
   end
 end

@@ -38,6 +38,14 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
       $scope.editing = true;
     }
 
+    $scope.update = function (post) {
+      post.update().then(function (result) {
+        $scope.invalid = false;
+      }, function (error){
+        $scope.invalid = true;
+      });
+    }
+
     $scope.getUser = function (post) {
         $scope.user = post.getUser();
     };

@@ -24,9 +24,13 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+# Bootstrap 3.0 with SASS so it works with other gems
+gem 'bootstrap-sass', '~> 3.0'
+
 # Angular Rails Resource
 gem 'angularjs-rails'
 gem 'angularjs-rails-resource'
+gem 'angular_rails_csrf'
 gem 'angular-ui-bootstrap-rails'
 
 group :doc do
