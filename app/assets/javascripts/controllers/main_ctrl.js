@@ -6,14 +6,23 @@ Blog.factory('User', ['railsResourceFactory', function (railsResourceFactory) {
     return resource;
 }]);
 
-Blog.factory('Post', ['railsResourceFactory', function (railsResourceFactory) {
+Blog.factory('Post', ['railsResourceFactory', 'User', function (railsResourceFactory, User) {
     var resource = railsResourceFactory({
-        url: '/posts',
-        name: 'post'
+      url: '/posts',
+      name: 'post'
     });
     resource.prototype.getUser = function () {
-        return User.get(this.userId);
+      console.log(['User.get', this.user_id]);
+      return User.get(this.user_id);
     };
+    return resource;
+}]);
+
+Blog.factory('Follower', ['railsResourceFactory', function (railsResourceFactory) {
+    var resource = railsResourceFactory({
+        url: '/followers',
+        name: 'follower'
+    });
     return resource;
 }]);
 
@@ -25,11 +34,11 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
       $scope.loading = true;
 
       Post.query().then(function (results) {
-          $scope.posts = results;
-          $scope.loading = false;
+        $scope.posts = results;
+        $scope.loading = false;
       }, function (error) {
-          console.log(["error", error]);
-          $scope.loading = false;
+        console.log(["error", error]);
+        $scope.loading = false;
       });
     };
 
@@ -41,23 +50,39 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
     $scope.update = function (post) {
       post.update().then(function (result) {
         $scope.invalid = false;
+        $scope.editing = false;
       }, function (error){
         $scope.invalid = true;
       });
     }
 
     $scope.getUser = function (post) {
-        $scope.user = post.getUser();
+      $scope.user = post.getUser();
     };
 
 }]);
 
-Blog.controller('TestCtrl', ['$scope', function ($scope) {
+Blog.controller('FollowCtrl', ['$scope', 'User', 'Follower', function ($scope, User, Follower) {
     $scope.text = 'Hello, Angular fanatic.';
 
-    $scope.following = {13: false, 7: true};
+    User.query().then(function (results) {
+      $scope.users = results;
+    }, function (error) {
+      console.log(["error", error]);
+    });
 
-    $scope.follow = function (user_id) {
+
+    Follower.query().then(function (results) {
+      following = {}
+      for (var i=0; i < results.length; i++)
+        following[results[i]] = true;
+      $scope.following = following;
+      console.log($scope.following);
+    }, function (error) {
+      console.log(["error", error]);
+    });
+
+    $scope.toggleFollow = function (user_id) {
       console.log(['toggle follow', user_id])
       console.log($scope.following);
 

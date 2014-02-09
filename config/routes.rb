@@ -1,4 +1,6 @@
 Angulartest::Application.routes.draw do
+  resources :followers
+
   resources :users
 
   resources :posts

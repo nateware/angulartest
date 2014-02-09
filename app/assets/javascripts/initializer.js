@@ -5,5 +5,7 @@ Blog.config(["RailsResourceProvider", function (RailsResourceProvider) {
     RailsResourceProvider.updateMethod('patch');
 }]);
 Blog.config(["railsSerializerProvider", function (railsSerializerProvider) {
-    railsSerializerProvider.underscore(angular.identity).camelize(angular.identity);
+    railsSerializerProvider.underscore(angular.identity).
+      camelize(angular.identity).
+      exclusionMatchers([/^id$/, 'created_at', 'updated_at']);
 }]);

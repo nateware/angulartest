@@ -28,16 +28,15 @@
 
 
 </div>
-<div ng-controller="TestCtrl">
+<div ng-controller="FollowCtrl">
   <div ng-view>
     {{ text }}
   </div>
-  <button type="button" class="btn btn-primary" ng-model="following[13]" ng-change="follow(13)"
-   btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
-      Follow
-  </button>
-  <button type="button" class="btn btn-primary" ng-model="following[7]" ng-change="follow(7)"
-   btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
-      Follow
-  </button>
+  <div ng-repeat="user in users">
+    <button type="button" class="btn btn-primary"
+     ng-model="following[user.id]" ng-change="toggleFollow(user.id)"
+     btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+        Follow {{user.name}}
+    </button>
+  </div>
 </div>
