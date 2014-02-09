@@ -34,25 +34,29 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
       $scope.loading = true;
 
       Post.query().then(function (results) {
-        $scope.posts = results;
+        $scope.posts   = results;
         $scope.loading = false;
-      }, function (error) {
-        console.log(["error", error]);
+      }, function (errors) {
+        $scope.errors  = errors.data;
         $scope.loading = false;
       });
     };
 
 
-    $scope.edit = function () {
-      $scope.editing = true;
+    $scope.edit = function (post) {
+      post.editing = true;
     }
 
     $scope.update = function (post) {
       post.update().then(function (result) {
-        $scope.invalid = false;
-        $scope.editing = false;
-      }, function (error){
-        $scope.invalid = true;
+        post.errors = {};
+        post.invalid = false;
+        post.editing = false;
+      }, function (errors){
+        post.errors = errors.data;
+        console.log(['post.errors', post.errors]);
+        post.invalid = true;
+        post.editing = true;
       });
     }
 
@@ -67,8 +71,8 @@ Blog.controller('FollowCtrl', ['$scope', 'User', 'Follower', function ($scope, U
 
     User.query().then(function (results) {
       $scope.users = results;
-    }, function (error) {
-      console.log(["error", error]);
+    }, function (errors) {
+      console.log(["errors", errors]);
     });
 
 
@@ -78,8 +82,8 @@ Blog.controller('FollowCtrl', ['$scope', 'User', 'Follower', function ($scope, U
         following[results[i]] = true;
       $scope.following = following;
       console.log($scope.following);
-    }, function (error) {
-      console.log(["error", error]);
+    }, function (errors) {
+      console.log(["errors", errors]);
     });
 
     $scope.toggleFollow = function (user_id) {
