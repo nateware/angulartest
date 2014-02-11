@@ -26,7 +26,7 @@
           <span ng-show="post.errors.user_id">{{post.errors.user_id.join(', ')}}</span>
         </div>
 
-        <button class="btn btn-default" ng-click="reset(post)">Reset</button>
+        <button class="btn btn-default" ng-click="cancel(post)">Cancel</button>
         <button class="btn btn-default" ng-click="update(post)">Save</button>
       </form>
       <pre>form = {{user | json}}</pre>
@@ -36,6 +36,8 @@
 
 
 </div>
+
+
 <div ng-controller="FollowCtrl">
   <div ng-view>
     {{ text }}

@@ -11,6 +11,7 @@ class PostsController < ApplicationController
     if @post.update_attributes(post_params)
       render json: @post
     else
+      logger.warn "Post update fail: #{@post.errors.full_messages}"
       render json: @post.errors, status: :unprocessable_entity
     end
   end
