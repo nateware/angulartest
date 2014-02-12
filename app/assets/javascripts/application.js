@@ -18,6 +18,7 @@
 //= require angular-resource
 //= require angular-ui-bootstrap
 //= require angularjs/rails/resource
+// require restangular.min
 //= require initializer
 //= require_tree ./controllers
 //= require_tree ./models

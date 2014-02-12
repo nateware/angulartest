@@ -6,15 +6,27 @@ Blog.factory('User', ['railsResourceFactory', function (railsResourceFactory) {
     return resource;
 }]);
 
+Blog.factory('UserGet', ['$resource', function ($resource){
+  // test of posts directly with AngularJS $resource
+  // return $resource('users/:id.json', {}, {
+  //   query: {method: 'GET', params:{id: 'list'}, isArray: true}
+  // });
+  return $resource('/users/:id.json', {id:'@id'});
+}])
+
 Blog.factory('Post', ['railsResourceFactory', 'User', function (railsResourceFactory, User) {
     var resource = railsResourceFactory({
       url: '/posts',
       name: 'post'
     });
-    resource.prototype.getUser = function () {
-      console.log(['User.get', this.user_id]);
-      // return User.get(this.user_id);
-    };
+    // This is totally off on the wrong tangent
+    // resource.prototype.getUser = function () {
+    //   User.get(this.user_id).then(function (user) {
+    //     this.user = user;
+    //   }, function (errors) {
+    //     $scope.errors = errors.data;
+    //   });
+    // };
     return resource;
 }]);
 
@@ -24,7 +36,7 @@ Blog.factory('Follower', ['railsResourceFactory', function (railsResourceFactory
       name: 'follower'
     });
     resource.follow = function (follower_id) {
-      this.$post('/followers/'+follower_id+'/follow'); 
+      this.$post('/followers/'+follower_id+'/follow');
     };
     resource.unfollow = function (follower_id) {
       this.$post('/followers/'+follower_id+'/unfollow');
@@ -33,7 +45,7 @@ Blog.factory('Follower', ['railsResourceFactory', function (railsResourceFactory
 }]);
 
 
-Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
+Blog.controller('MainCtrl', ['$scope', 'Post', 'UserGet', function ($scope, Post, UserGet) {
     $scope.text = 'Main controller text';
 
     $scope.loadPosts = function () {
@@ -41,6 +53,7 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
 
       Post.query().then(function (results) {
         $scope.posts   = results;
+        $scope.user    = UserGet.get({id: 1});
         $scope.loading = false;
       }, function (errors) {
         $scope.errors  = errors.data;
@@ -60,7 +73,7 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
         post.invalid = false;
         post.editing = false;
       }, function (errors){
-        post.errors = errors.data;
+        post.errors = errors.data.errors;
         console.log(['post.errors', post.errors]);
         post.invalid = true;
         post.editing = true;
@@ -72,19 +85,20 @@ Blog.controller('MainCtrl', ['$scope', 'Post', function ($scope, Post) {
     };
 
     $scope.getUser = function (post) {
-      $scope.user = post.getUser();
+      post.user = post.getUser();
     };
 
 }]);
 
-Blog.controller('FollowCtrl', ['$scope', 'User', 'Follower', function ($scope, User, Follower) {
+Blog.controller('FollowCtrl', ['$scope', 'UserGet', 'Follower', function ($scope, UserGet, Follower) {
     $scope.text = 'Hello, Angular fanatic.';
 
-    User.query().then(function (results) {
-      $scope.users = results;
-    }, function (errors) {
-      console.log("errors" + errors);
-    });
+    // User.query().then(function (results) {
+    //   $scope.users = results;
+    // }, function (errors) {
+    //   console.log("errors" + errors);
+    // });
+    $scope.users = UserGet.query();
 
     Follower.query().then(function (results) {
       // get an array back, map to {id: true/false} for by-ref manipulation
@@ -109,10 +123,4 @@ Blog.controller('FollowCtrl', ['$scope', 'User', 'Follower', function ($scope, U
     }
 
 }]);
-
-
-Blog.controller('TabCtrl', ['$scope', 'User', 'Follower', function ($scope, User, Follower) {
-
-}]);
-
 

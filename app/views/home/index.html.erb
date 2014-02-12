@@ -1,3 +1,4 @@
+
 <div ng-controller="MainCtrl">
   <div ng-view>
     {{ text }}
@@ -7,7 +8,7 @@
   <div ng-show="loading">Loading posts...</div>
   <div ng-repeat="post in posts">
     <h4>{{post.title}}</h4>
-    <h5>by {{post.user_id}}</h5>
+    <h5>by {{user.name}}</h5>
     <p>{{post.body}}</p>
     <button class="btn btn-default" ng-click="edit(post)">Edit</button>
 

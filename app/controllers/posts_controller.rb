@@ -3,16 +3,16 @@ class PostsController < ApplicationController
 
   def index
     @posts = Post.all
-    render json: @posts
+    respond_with @posts
   end
 
   def update
     @post = Post.find(params[:id])
     if @post.update_attributes(post_params)
-      render json: @post
+      respond_with @post
     else
       logger.warn "Post update fail: #{@post.errors.full_messages}"
-      render json: @post.errors, status: :unprocessable_entity
+      respond_with @post, status: :unprocessable_entity
     end
   end
 
